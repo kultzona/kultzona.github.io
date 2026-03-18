@@ -830,6 +830,13 @@
     <div class="sub-url-value" id="subUrlText">https://kultzona.github.io/sub.txt</div>
     <button class="btn-copy" onclick="copySubUrl()">Скопировать</button>
   </div>
+
+  <!-- VLESS LINK -->
+  <div class="sub-url-block" style="margin-top:1px;">
+    <div class="sub-url-label">VLESS ссылка (ручное добавление)</div>
+    <div class="sub-url-value" id="vlessText" style="font-size:9px;word-break:break-all;">vless://9abd6c6b-34f4-4740-a2b5-efef2e4daf10@relay.kultzona.net:443?type=tcp&security=reality&pbk=ig3jKVXaZ2UkK3cBuQJiM_8fs9QkiosyilD9KHVWXic&sid=a1b2c3d4&fp=chrome&sni=www.microsoft.com&flow=xtls-rprx-vision#KULTURA-Onboarding</div>
+    <button class="btn-copy" onclick="copyVless()">Скопировать</button>
+  </div>
 </section>
 
 <!-- STEP 3: REGISTER -->
@@ -893,20 +900,36 @@
   // ─── Deep link handler ───────────────────────────────────────────────────────
   function handleDeepLink(e, app) {
     const link = e.currentTarget;
-    if (!link.href || link.href === '#' || link.href.endsWith('#')) {
+    const rawHref = link.getAttribute('href');
+    if (!rawHref || rawHref === '#') {
       e.preventDefault();
-      showToast('Загрузка...');
+      showToast('Нажмите ещё раз...');
       return;
     }
     showToast('Открываем ' + app + '...');
   }
 
   // ─── Copy sub URL ────────────────────────────────────────────────────────────
+  const VLESS_LINK = 'vless://9abd6c6b-34f4-4740-a2b5-efef2e4daf10@relay.kultzona.net:443?type=tcp&security=reality&pbk=ig3jKVXaZ2UkK3cBuQJiM_8fs9QkiosyilD9KHVWXic&sid=a1b2c3d4&fp=chrome&sni=www.microsoft.com&flow=xtls-rprx-vision#KULTURA-Onboarding';
+
   function copySubUrl() {
     navigator.clipboard.writeText(SUB_URL).then(() => {
       showToast('Ссылка скопирована');
     }).catch(() => {
       const el = document.getElementById('subUrlText');
+      const range = document.createRange();
+      range.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      showToast('Выделите и скопируйте');
+    });
+  }
+
+  function copyVless() {
+    navigator.clipboard.writeText(VLESS_LINK).then(() => {
+      showToast('VLESS скопирован');
+    }).catch(() => {
+      const el = document.getElementById('vlessText');
       const range = document.createRange();
       range.selectNode(el);
       window.getSelection().removeAllRanges();
