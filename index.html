@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>KULT ZONA — Начало работы</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Russo+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Tenor+Sans&family=Special+Elite&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg:      #080806;
+      --bg2:     #0d0d0b;
+      --bg3:     #131310;
+      --border:  rgba(255,255,255,0.06);
+      --accent:  #cc1f1f;
+      --accent2: #ff2b2b;
+      --text:    #e5e3dc;
+      --muted:   #4a4840;
+      --muted2:  #2a2820;
+    }
+
+    html { scroll-behavior: smooth; color-scheme: dark; scrollbar-width: thin; scrollbar-color: #cc1f1f #080806; }
+    ::-webkit-scrollbar { width: 3px; height: 3px; }
+    ::-webkit-scrollbar-track { background: #080806; }
+    ::-webkit-scrollbar-thumb { background: #cc1f1f; border-radius: 0; }
+    ::-webkit-scrollbar-thumb:hover { background: #ff2b2b; }
+
+    /* GRAIN */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      z-index: 9990;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Special Elite', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    * { cursor: none !important; }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.18s ease;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 60px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,8,6,0.9);
+      backdrop-filter: blur(20px);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; letter-spacing: 4px;
+      color: var(--accent); text-decoration: none;
+      position: relative;
+    }
+    .nav-logo::after {
+      content: '';
+      position: absolute; left: -4px; right: -4px; top: 50%;
+      height: 2px; background: var(--accent); opacity: 0.35;
+    }
+    .nav-logo span { color: var(--text); letter-spacing: 4px; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-tg {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted); text-decoration: none;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-tg:hover { border-color: #29a7e1; color: #29a7e1; }
+    .nav-tg svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 140px 60px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(204,31,31,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(204,31,31,0.04) 1px, transparent 1px);
+      background-size: 60px 60px; z-index: 0;
+    }
+    .hero-slash {
+      position: absolute; top: 0; bottom: 0; right: 18%;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, rgba(204,31,31,0.25) 30%, rgba(204,31,31,0.25) 70%, transparent);
+      transform: rotate(8deg); z-index: 0;
+    }
+    .hero-glow {
+      position: absolute; top: 10%; right: -50px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(204,31,31,0.08) 0%, transparent 70%);
+      z-index: 0; animation: pulse 6s ease-in-out infinite;
+    }
+    .hero-glow2 {
+      position: absolute; bottom: 5%; left: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(204,31,31,0.04) 0%, transparent 70%);
+      z-index: 0;
+    }
+    @keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.1)} }
+
+    .hero-serial {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 4px;
+      color: rgba(204,31,31,0.5);
+      margin-bottom: 18px; position: relative; z-index: 1;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(204,31,31,0.3);
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 14px; margin-bottom: 36px;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.05s ease both;
+    }
+    .badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #4caf6e; box-shadow: 0 0 5px #4caf6e;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(80px, 13vw, 150px);
+      line-height: 1.05;
+      letter-spacing: 0px;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-title .accent-word {
+      display: block;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 8px #cc1f1f;
+      color: transparent;
+      letter-spacing: 4px;
+      filter: drop-shadow(0 0 10px rgba(204,31,31,1)) drop-shadow(0 0 28px rgba(204,31,31,0.8)) drop-shadow(0 0 60px rgba(204,31,31,0.4));
+    }
+    .hero-title .solid-word {
+      display: block;
+      color: #ffffff;
+      -webkit-text-fill-color: #ffffff;
+      -webkit-text-stroke: 0px;
+      text-shadow: none;
+      letter-spacing: 0px;
+    }
+    .hero-handwrite {
+      letter-spacing: 3px; text-transform: uppercase;
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 15px; color: var(--accent);
+      opacity: 0.7; margin-top: 8px;
+      display: block;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+    .hero-sub {
+      font-size: 14px; color: var(--muted);
+      max-width: 480px; line-height: 1.9;
+      margin-top: 28px; position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    /* STEPS ROW */
+    .steps-row {
+      display: flex; gap: 1px; background: var(--border);
+      margin-top: 48px; position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.25s ease both;
+    }
+    .step-pill {
+      flex: 1; background: var(--bg2);
+      padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .step-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: rgba(204,31,31,0.5); flex-shrink: 0;
+    }
+    .step-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .step-pill.active .step-label { color: var(--text); }
+    .step-pill.active { background: var(--bg3); border-bottom: 2px solid var(--accent); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* TICKER */
+    .ticker-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    .ticker {
+      display: flex; gap: 48px;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-item {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); flex-shrink: 0;
+    }
+    .ticker-item span { color: var(--accent); margin: 0 8px; }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* SECTIONS */
+    .section { padding: 100px 60px; }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
+    .section-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(36px, 5vw, 68px);
+      line-height: 1; color: var(--text);
+      margin-bottom: 56px; letter-spacing: 1px;
+    }
+
+    /* STEP 1: INSTALL */
+    #step-install { background: var(--bg2); }
+
+    .platform-tabs {
+      display: flex; gap: 1px;
+      background: var(--border); margin-bottom: 1px;
+    }
+    .plat-tab {
+      flex: 1;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px 0; text-align: center;
+      color: var(--muted); background: var(--bg2);
+      cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .plat-tab:hover:not(.active) { color: var(--accent); }
+    .plat-tab.active {
+      background: var(--bg3); color: var(--text);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .app-grid {
+      display: none;
+      gap: 1px; background: var(--border);
+    }
+    .app-grid.active { display: grid; }
+    #platform-ios.active, #platform-windows.active { grid-template-columns: repeat(2, 1fr); }
+    #platform-android.active, #platform-macos.active { grid-template-columns: repeat(3, 1fr); }
+
+    .app-card {
+      background: var(--bg2);
+      padding: 44px 40px;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .app-card::after {
+      content: '';
+      position: absolute; bottom: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border: 2px solid rgba(204,31,31,0.07); border-radius: 50%;
+    }
+    .app-card:hover { background: var(--bg3); }
+    .app-card.recommended { border-top: 2px solid var(--accent); }
+
+    .app-rec-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+      background: var(--accent); color: #fff;
+      padding: 3px 8px; display: inline-block;
+      margin-bottom: 20px; font-weight: 700;
+    }
+    .app-card:not(.recommended) .app-name {
+      margin-top: 36px;
+    }
+    .app-name {
+      font-family: 'Russo One', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px; color: var(--text); margin-bottom: 12px;
+    }
+    .app-desc {
+      font-family: 'Special Elite', monospace;
+      font-size: 13px; color: var(--muted);
+      line-height: 1.9; margin-bottom: 28px;
+    }
+    .btn-download {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 11px 20px;
+      border: 1px solid rgba(204,31,31,0.4);
+      color: var(--accent); text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-download:hover { background: rgba(204,31,31,0.08); border-color: var(--accent); }
+
+    /* STEP 2: CONFIG */
+    #step-config { background: var(--bg); }
+
+    .config-notice {
+      background: var(--bg3);
+      border: 1px solid rgba(204,31,31,0.2);
+      border-left: 3px solid var(--accent);
+      padding: 20px 28px;
+      margin-bottom: 48px;
+      font-family: 'Special Elite', monospace;
+      font-size: 13px; color: var(--muted);
+      line-height: 1.9;
+    }
+    .config-notice strong {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 1px;
+      color: var(--text); font-weight: 700;
+    }
+
+    .connect-intro {
+      font-family: 'Special Elite', monospace;
+      font-size: 14px; color: var(--muted);
+      max-width: 540px; line-height: 1.9; margin-bottom: 56px;
+    }
+
+    .connect-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+    }
+    .connect-card {
+      background: var(--bg2);
+      padding: 48px 40px;
+      position: relative; overflow: hidden;
+      text-decoration: none; display: block;
+      transition: background 0.3s;
+      border-left: 2px solid transparent;
+      cursor: pointer;
+    }
+    .connect-card::before {
+      content: 'KULT ZONA · VPN · 2026 ·';
+      position: absolute; top: 20px; right: 20px;
+      font-family: 'Special Elite', monospace;
+      font-size: 6px; letter-spacing: 3px;
+      color: rgba(204,31,31,0.12); text-transform: uppercase;
+      width: 64px; height: 64px;
+      border: 1px solid rgba(204,31,31,0.1); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; line-height: 1.4; word-spacing: 100px;
+    }
+    .connect-card::after {
+      content: '';
+      position: absolute; bottom: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border: 2px solid rgba(204,31,31,0.06); border-radius: 50%;
+    }
+    .connect-card:hover { background: var(--bg3); border-left-color: var(--accent); }
+    .connect-card:hover .connect-app-name { color: var(--accent); }
+    .connect-card:hover .connect-arrow { transform: translateX(4px); color: var(--accent); }
+
+    .connect-app-name {
+      font-family: 'Russo One', sans-serif;
+      font-size: 30px; letter-spacing: 2px;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .connect-app-platforms {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 24px;
+    }
+    .connect-desc {
+      font-size: 13px; color: var(--muted);
+      line-height: 1.8; margin-bottom: 32px;
+    }
+    .connect-arrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 22px; color: var(--muted);
+      transition: all 0.2s; display: inline-block;
+    }
+
+    /* SUB URL BLOCK */
+    .sub-url-block {
+      margin-top: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      display: flex; align-items: center; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .sub-url-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); flex-shrink: 0;
+    }
+    .sub-url-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 1px;
+      color: var(--text); flex: 1;
+      word-break: break-all;
+    }
+    .btn-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid rgba(204,31,31,0.4);
+      color: var(--accent);
+      cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+    }
+    .btn-copy:hover { background: rgba(204,31,31,0.08); border-color: var(--accent); }
+
+    /* STEP 3: REGISTER */
+    #step-register { background: var(--bg2); }
+
+    .register-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--border);
+    }
+    .register-card {
+      background: var(--bg2);
+      padding: 60px 56px;
+      position: relative; overflow: hidden;
+    }
+    .register-card::after {
+      content: '';
+      position: absolute; bottom: -28px; right: -28px;
+      width: 110px; height: 110px;
+      border: 2px solid rgba(204,31,31,0.06); border-radius: 50%;
+    }
+    .register-card:first-child { background: var(--bg3); }
+
+    .register-ornament {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 56px; color: var(--accent);
+      opacity: 0.14; line-height: 1; margin-bottom: 20px;
+    }
+    .register-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: 32px; letter-spacing: 1px;
+      color: var(--text); margin-bottom: 14px;
+    }
+    .register-text {
+      font-family: 'Special Elite', monospace;
+      font-size: 14px; color: var(--muted);
+      line-height: 1.9; margin-bottom: 36px;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px 36px;
+      background: var(--accent); color: #fff;
+      text-decoration: none; font-weight: 700;
+      transition: all 0.2s; position: relative;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,transparent,transparent 4px,
+        rgba(0,0,0,0.08) 4px,rgba(0,0,0,0.08) 8px
+      );
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px 36px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .register-serial {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px; letter-spacing: 3px;
+      color: rgba(204,31,31,0.35); text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .check-list {
+      list-style: none; padding: 0;
+      font-size: 13px; color: var(--muted); line-height: 2;
+    }
+    .check-list li::before {
+      content: '✓ ';
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 40px 60px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 4px;
+      color: var(--accent); text-decoration: none;
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy {
+      font-family: 'Special Elite', monospace;
+      font-size: 10px; letter-spacing: 1px;
+      color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 28px; }
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 12px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text);
+      opacity: 0; transition: all 0.2s;
+      pointer-events: none; white-space: nowrap; z-index: 9999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+
+      nav { padding: 20px 24px; }
+      .nav-logo { font-size: 22px; letter-spacing: 3px; }
+      .nav-tg { font-size: 9px; padding: 8px 12px; letter-spacing: 1px; }
+
+      .hero { padding: 100px 20px 56px; min-height: 100svh; }
+      .hero-title { font-size: clamp(42px, 14vw, 120px); }
+      .hero-handwrite { font-size: 12px; }
+      .hero-sub { font-size: 12px; margin-top: 20px; }
+      .steps-row { flex-direction: column; margin-top: 32px; }
+      .step-pill { padding: 14px 20px; }
+
+      .section { padding: 56px 20px; }
+      .section-title { font-size: 11vw; margin-bottom: 36px; }
+
+      .platform-tabs { flex-wrap: wrap; }
+      .plat-tab { flex: 0 0 50%; font-size: 9px; padding: 12px 0; }
+
+      .app-grid { grid-template-columns: 1fr !important; }
+      .app-card { padding: 28px 20px; }
+
+      .connect-cards { grid-template-columns: 1fr; }
+      .connect-card { padding: 32px 20px; }
+      .connect-card::before { display: none; }
+      .connect-app-name { font-size: 24px; }
+
+      .sub-url-block { padding: 20px; }
+      .sub-url-value { font-size: 10px; }
+
+      .register-grid { grid-template-columns: 1fr; }
+      .register-card { padding: 40px 20px; }
+      .register-ornament { font-size: 40px; }
+      .register-title { font-size: 22px; }
+
+      footer { padding: 28px 20px; flex-direction: column; gap: 16px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="https://kultzona.net" class="nav-logo">KULT<span> ZONA</span></a>
+  <div class="nav-right">
+    <a href="https://t.me/kult_zona_support" target="_blank" class="nav-tg">
+      <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Поддержка
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-slash"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-serial">KULT · ZONA · ONBOARDING · 2026</div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    // Три шага до свободного интернета
+  </div>
+
+  <div class="hero-title">
+    <span class="solid-word">НАЧАЛО</span>
+    <span class="accent-word">РАБОТЫ</span>
+  </div>
+
+  <div class="hero-handwrite">ваша зона свободы</div>
+
+  <p class="hero-sub">
+    Установите приложение, добавьте временный конфиг и зарегистрируйтесь —
+    займёт не больше трёх минут.
+  </p>
+
+  <!-- STEPS OVERVIEW -->
+  <div class="steps-row">
+    <div class="step-pill active">
+      <div class="step-num">01</div>
+      <div class="step-label">Установить приложение</div>
+    </div>
+    <div class="step-pill">
+      <div class="step-num">02</div>
+      <div class="step-label">Добавить конфиг</div>
+    </div>
+    <div class="step-pill">
+      <div class="step-num">03</div>
+      <div class="step-label">Зарегистрироваться</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">FINLAND<span>·</span>VLESS REALITY</span>
+    <span class="ticker-item">GERMANY<span>·</span>VLESS REALITY</span>
+    <span class="ticker-item">NETHERLANDS<span>·</span>VLESS REALITY</span>
+    <span class="ticker-item">TG LOGIN<span>·</span>РЕГИСТРАЦИЯ</span>
+    <span class="ticker-item">АВТОМАТИЧЕСКАЯ<span>·</span>НАСТРОЙКА</span>
+    <span class="ticker-item">FINLAND<span>·</span>VLESS REALITY</span>
+    <span class="ticker-item">GERMANY<span>·</span>VLESS REALITY</span>
+    <span class="ticker-item">NETHERLANDS<span>·</span>VLESS REALITY</span>
+    <span class="ticker-item">TG LOGIN<span>·</span>РЕГИСТРАЦИЯ</span>
+    <span class="ticker-item">АВТОМАТИЧЕСКАЯ<span>·</span>НАСТРОЙКА</span>
+  </div>
+</div>
+
+<!-- STEP 1: INSTALL -->
+<section class="section" id="step-install">
+  <div class="section-label">// 01 — УСТАНОВКА</div>
+  <div class="section-title">ВЫБЕРИТЕ<br>ПРИЛОЖЕНИЕ</div>
+
+  <div class="platform-tabs">
+    <button class="plat-tab active" data-platform="ios">iOS</button>
+    <button class="plat-tab" data-platform="android">Android</button>
+    <button class="plat-tab" data-platform="windows">Windows</button>
+    <button class="plat-tab" data-platform="macos">macOS</button>
+  </div>
+
+  <!-- iOS -->
+  <div class="app-grid active" id="platform-ios">
+    <div class="app-card recommended">
+      <div class="app-rec-badge">Рекомендуется</div>
+      <div class="app-name">Happ</div>
+      <div class="app-desc">Простой и быстрый клиент. VLESS Reality одним тапом. Работает без настройки.</div>
+      <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" class="btn-download">App Store →</a>
+    </div>
+    <div class="app-card">
+      <div class="app-name">Hiddify</div>
+      <div class="app-desc">Универсальный клиент с поддержкой подписок. Автоматически обновляет конфигурацию.</div>
+      <a href="https://apps.apple.com/app/hiddify-proxy-vpn/id6596777532" target="_blank" class="btn-download">App Store →</a>
+    </div>
+  </div>
+
+  <!-- Android -->
+  <div class="app-grid" id="platform-android">
+    <div class="app-card recommended">
+      <div class="app-rec-badge">Рекомендуется</div>
+      <div class="app-name">Happ</div>
+      <div class="app-desc">Простой и быстрый клиент. VLESS Reality одним тапом. Работает без настройки.</div>
+      <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank" class="btn-download">Google Play →</a>
+    </div>
+    <div class="app-card">
+      <div class="app-name">Hiddify</div>
+      <div class="app-desc">Поддерживает все протоколы, автообновление конфигурации по подписке.</div>
+      <a href="https://play.google.com/store/apps/details?id=app.hiddify.com" target="_blank" class="btn-download">Google Play →</a>
+    </div>
+    <div class="app-card">
+      <div class="app-name">FlClash X</div>
+      <div class="app-desc">Clash-клиент с расширенными настройками маршрутизации. Для опытных пользователей.</div>
+      <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-android-universal.apk" class="btn-download">GitHub →</a>
+    </div>
+  </div>
+
+  <!-- Windows -->
+  <div class="app-grid" id="platform-windows">
+    <div class="app-card recommended">
+      <div class="app-rec-badge">Рекомендуется</div>
+      <div class="app-name">Hiddify</div>
+      <div class="app-desc">Простой GUI-клиент с поддержкой подписок и автообновлением конфигурации.</div>
+      <a href="#" class="btn-download" onclick="ghDownload(event,'hiddify/hiddify-app',/windows.*setup\.exe$|setup.*\.exe$/i)">GitHub →</a>
+    </div>
+    <div class="app-card">
+      <div class="app-name">FlClash X</div>
+      <div class="app-desc">Мощный Clash-клиент с гибкой настройкой правил маршрутизации.</div>
+      <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-windows-amd64-setup.exe" class="btn-download">GitHub →</a>
+    </div>
+  </div>
+
+  <!-- macOS -->
+  <div class="app-grid" id="platform-macos">
+    <div class="app-card recommended">
+      <div class="app-rec-badge">Рекомендуется</div>
+      <div class="app-name">Happ</div>
+      <div class="app-desc">Нативный macOS-клиент. Быстрое подключение одним кликом по ссылке подписки.</div>
+      <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" class="btn-download">App Store →</a>
+    </div>
+    <div class="app-card">
+      <div class="app-name">Hiddify</div>
+      <div class="app-desc">Кроссплатформенный клиент с поддержкой подписок и автообновления.</div>
+      <a href="https://apps.apple.com/app/hiddify-proxy-vpn/id6596777532" target="_blank" class="btn-download">App Store →</a>
+    </div>
+    <div class="app-card">
+      <div class="app-name">FlClash X</div>
+      <div class="app-desc">Clash-клиент для macOS с расширенными настройками и правилами.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-macos-arm64.dmg" class="btn-download">Apple Silicon →</a>
+        <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-macos-amd64.dmg" class="btn-download">Intel X64 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2: CONFIG -->
+<section class="section" id="step-config">
+  <div class="section-label">// 02 — КОНФИГУРАЦИЯ</div>
+  <div class="section-title">ДОБАВИТЬ<br>КОНФИГ</div>
+
+  <div class="config-notice">
+    <strong>⚠ Временный конфиг</strong><br>
+    Этот конфиг открывает только kultzona.net — чтобы вы могли зарегистрироваться.
+    После регистрации вы получите полный конфиг со всеми серверами (Финляндия, Германия, Нидерланды).
+  </div>
+
+  <p class="connect-intro">
+    Нажмите кнопку для вашего приложения — конфиг добавится автоматически.
+    Или скопируйте ссылку подписки вручную.
+  </p>
+
+  <div class="connect-cards">
+    <a id="btn-hiddify" href="#" class="connect-card" onclick="handleDeepLink(event,'Hiddify')">
+      <div class="connect-app-name">Hiddify</div>
+      <div class="connect-app-platforms">Все платформы</div>
+      <div class="connect-desc">Откроет Hiddify и автоматически добавит конфиг. Нажмите и разрешите открыть приложение.</div>
+      <div class="connect-arrow">→</div>
+    </a>
+    <a id="btn-flclash" href="#" class="connect-card" onclick="handleDeepLink(event,'FlClash X')">
+      <div class="connect-app-name">FlClash X</div>
+      <div class="connect-app-platforms">Windows · macOS · Android</div>
+      <div class="connect-desc">Откроет FlClash X и автоматически добавит конфиг. Нажмите и разрешите открыть приложение.</div>
+      <div class="connect-arrow">→</div>
+    </a>
+    <a id="btn-happ" href="#" class="connect-card" onclick="handleDeepLink(event,'Happ')">
+      <div class="connect-app-name">Happ</div>
+      <div class="connect-app-platforms">iOS · Android · macOS</div>
+      <div class="connect-desc">Откроет Happ и автоматически добавит конфиг. Нажмите и разрешите открыть приложение.</div>
+      <div class="connect-arrow">→</div>
+    </a>
+  </div>
+
+  <!-- SUB URL -->
+  <div class="sub-url-block">
+    <div class="sub-url-label">Ссылка подписки</div>
+    <div class="sub-url-value" id="subUrlText">https://kultzona.net/sub/kz-onboarding-2026</div>
+    <button class="btn-copy" onclick="copySubUrl()">Скопировать</button>
+  </div>
+</section>
+
+<!-- STEP 3: REGISTER -->
+<section class="section" id="step-register">
+  <div class="section-label">// 03 — РЕГИСТРАЦИЯ</div>
+  <div class="section-title">ЗАРЕГИСТРИ-<br>РУЙТЕСЬ</div>
+
+  <div class="register-grid">
+    <div class="register-card">
+      <div class="register-ornament">→</div>
+      <div class="register-title">Получите полный доступ</div>
+      <div class="register-text">
+        Зарегистрируйтесь через Telegram — это займёт 10 секунд.
+        После регистрации вы получите персональный конфиг с доступом
+        ко всем серверам без ограничений.
+      </div>
+      <a href="https://kultzona.net/register" class="btn-primary">Зарегистрироваться →</a>
+    </div>
+    <div class="register-card">
+      <div class="register-serial">KULT · ZONA · BETA</div>
+      <div class="register-title">Что вы получите</div>
+      <ul class="check-list">
+        <li>3 сервера: Финляндия, Германия, Нидерланды</li>
+        <li>VLESS Reality — неотличим от обычного HTTPS</li>
+        <li>Hysteria2 — максимальная скорость</li>
+        <li>Автообновление конфигурации каждые 24 часа</li>
+        <li>Личный кабинет с трафиком и статусом</li>
+        <li>Поддержка в Telegram</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://kultzona.net" class="footer-logo">KULT<span> ZONA</span></a>
+  <div class="footer-links">
+    <a href="https://t.me/kult_zona_support" target="_blank">Поддержка</a>
+    <a href="https://t.me/+ffZCsxrjchY4ZjUy" target="_blank">Наш канал</a>
+    <a href="https://kultzona.net/register">Регистрация</a>
+  </div>
+  <div class="footer-copy">© 2026 KULT ZONA. Все права защищены.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const SUB_URL = 'https://kultzona.net/sub/kz-onboarding-2026';
+
+  // ─── Deep links ─────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const enc = encodeURIComponent(SUB_URL);
+    document.getElementById('btn-hiddify').href =
+      `hiddify://install-config?url=${enc}&name=KULT+ZONA+Onboarding`;
+    document.getElementById('btn-flclash').href =
+      `flclash://install-config?url=${enc}`;
+    document.getElementById('btn-happ').href =
+      `happ://add-subscription?url=${enc}&name=KULT+ZONA+Onboarding`;
+  });
+
+  // ─── Deep link handler ───────────────────────────────────────────────────────
+  function handleDeepLink(e, app) {
+    const link = e.currentTarget;
+    if (!link.href || link.href === '#' || link.href.endsWith('#')) {
+      e.preventDefault();
+      showToast('Загрузка...');
+      return;
+    }
+    showToast('Открываем ' + app + '...');
+  }
+
+  // ─── Copy sub URL ────────────────────────────────────────────────────────────
+  function copySubUrl() {
+    navigator.clipboard.writeText(SUB_URL).then(() => {
+      showToast('Ссылка скопирована');
+    }).catch(() => {
+      const el = document.getElementById('subUrlText');
+      const range = document.createRange();
+      range.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      showToast('Выделите и скопируйте');
+    });
+  }
+
+  // ─── Platform tabs ───────────────────────────────────────────────────────────
+  document.querySelectorAll('.plat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.plat-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.app-grid').forEach(g => g.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('platform-' + tab.dataset.platform).classList.add('active');
+    });
+  });
+
+  // ─── Toast ───────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  // ─── GitHub direct download ──────────────────────────────────────────────────
+  async function ghDownload(e, repo, pattern) {
+    e.preventDefault();
+    showToast('Загружаем...');
+    try {
+      const r = await fetch(`https://api.github.com/repos/${repo}/releases/latest`);
+      const d = await r.json();
+      const asset = d.assets && d.assets.find(a => pattern.test(a.name));
+      if (asset) {
+        window.location.href = asset.browser_download_url;
+      } else {
+        window.open(d.html_url || `https://github.com/${repo}/releases/latest`, '_blank');
+      }
+    } catch(err) {
+      window.open(`https://github.com/${repo}/releases/latest`, '_blank');
+    }
+  }
+
+  // ─── Custom cursor ────────────────────────────────────────────────────────────
+  if (window.matchMedia('(pointer: fine)').matches) {
+    const cur = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function loop() {
+      cur.style.left  = (mx - 5)  + 'px';
+      cur.style.top   = (my - 5)  + 'px';
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = (rx - 18) + 'px';
+      ring.style.top  = (ry - 18) + 'px';
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a, button, .connect-card').forEach(el => {
+      el.addEventListener('mouseenter', () => { cur.style.transform = 'scale(2)'; ring.style.transform = 'scale(1.4)'; ring.style.opacity = '0.8'; });
+      el.addEventListener('mouseleave', () => { cur.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; ring.style.opacity = '0.5'; });
+    });
+  }
+</script>
+</body>
+</html>
