@@ -271,80 +271,8 @@
       margin-bottom: 56px; letter-spacing: 1px;
     }
 
-    /* STEP 1: INSTALL */
+    /* STEP 1: CONFIG */
     #step-install { background: var(--bg2); }
-
-    .platform-tabs {
-      display: flex; gap: 1px;
-      background: var(--border); margin-bottom: 1px;
-    }
-    .plat-tab {
-      flex: 1;
-      font-family: 'Space Mono', monospace;
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      padding: 14px 0; text-align: center;
-      color: var(--muted); background: var(--bg2);
-      cursor: pointer; border: none; transition: all 0.2s;
-    }
-    .plat-tab:hover:not(.active) { color: var(--accent); }
-    .plat-tab.active {
-      background: var(--bg3); color: var(--text);
-      border-bottom: 2px solid var(--accent);
-    }
-
-    .app-grid {
-      display: none;
-      gap: 1px; background: var(--border);
-    }
-    .app-grid.active { display: grid; }
-    #platform-ios.active, #platform-windows.active { grid-template-columns: repeat(2, 1fr); }
-    #platform-android.active, #platform-macos.active { grid-template-columns: repeat(3, 1fr); }
-
-    .app-card {
-      background: var(--bg2);
-      padding: 44px 40px;
-      position: relative; overflow: hidden;
-      transition: background 0.3s;
-    }
-    .app-card::after {
-      content: '';
-      position: absolute; bottom: -20px; right: -20px;
-      width: 80px; height: 80px;
-      border: 2px solid rgba(204,31,31,0.07); border-radius: 50%;
-    }
-    .app-card:hover { background: var(--bg3); }
-    .app-card.recommended { border-top: 2px solid var(--accent); }
-
-    .app-rec-badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-      background: var(--accent); color: #fff;
-      padding: 3px 8px; display: inline-block;
-      margin-bottom: 20px; font-weight: 700;
-    }
-    .app-card:not(.recommended) .app-name {
-      margin-top: 36px;
-    }
-    .app-name {
-      font-family: 'Russo One', sans-serif;
-      font-size: 22px;
-      letter-spacing: 1px; color: var(--text); margin-bottom: 12px;
-    }
-    .app-desc {
-      font-family: 'Special Elite', monospace;
-      font-size: 13px; color: var(--muted);
-      line-height: 1.9; margin-bottom: 28px;
-    }
-    .btn-download {
-      display: inline-block;
-      font-family: 'Space Mono', monospace;
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      padding: 11px 20px;
-      border: 1px solid rgba(204,31,31,0.4);
-      color: var(--accent); text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-download:hover { background: rgba(204,31,31,0.08); border-color: var(--accent); }
 
     /* STEP 2: CONFIG */
     #step-config { background: var(--bg); }
@@ -664,22 +592,18 @@
   <div class="hero-handwrite">ваша зона свободы</div>
 
   <p class="hero-sub">
-    Установите приложение, добавьте временный конфиг и зарегистрируйтесь —
-    займёт не больше трёх минут.
+    Добавьте временный конфиг в своё приложение и зарегистрируйтесь —
+    займёт не больше двух минут.
   </p>
 
   <!-- STEPS OVERVIEW -->
   <div class="steps-row">
     <div class="step-pill active">
       <div class="step-num">01</div>
-      <div class="step-label">Установить приложение</div>
-    </div>
-    <div class="step-pill">
-      <div class="step-num">02</div>
       <div class="step-label">Добавить конфиг</div>
     </div>
     <div class="step-pill">
-      <div class="step-num">03</div>
+      <div class="step-num">02</div>
       <div class="step-label">Зарегистрироваться</div>
     </div>
   </div>
@@ -701,95 +625,9 @@
   </div>
 </div>
 
-<!-- STEP 1: INSTALL -->
+<!-- STEP 1: CONFIG -->
 <section class="section" id="step-install">
-  <div class="section-label">// 01 — УСТАНОВКА</div>
-  <div class="section-title">ВЫБЕРИТЕ<br>ПРИЛОЖЕНИЕ</div>
-
-  <div class="platform-tabs">
-    <button class="plat-tab active" data-platform="ios">iOS</button>
-    <button class="plat-tab" data-platform="android">Android</button>
-    <button class="plat-tab" data-platform="windows">Windows</button>
-    <button class="plat-tab" data-platform="macos">macOS</button>
-  </div>
-
-  <!-- iOS -->
-  <div class="app-grid active" id="platform-ios">
-    <div class="app-card recommended">
-      <div class="app-rec-badge">Рекомендуется</div>
-      <div class="app-name">Happ</div>
-      <div class="app-desc">Простой и быстрый клиент. VLESS Reality одним тапом. Работает без настройки.</div>
-      <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" class="btn-download">App Store →</a>
-    </div>
-    <div class="app-card">
-      <div class="app-name">Hiddify</div>
-      <div class="app-desc">Универсальный клиент с поддержкой подписок. Автоматически обновляет конфигурацию.</div>
-      <a href="https://apps.apple.com/app/hiddify-proxy-vpn/id6596777532" target="_blank" class="btn-download">App Store →</a>
-    </div>
-  </div>
-
-  <!-- Android -->
-  <div class="app-grid" id="platform-android">
-    <div class="app-card recommended">
-      <div class="app-rec-badge">Рекомендуется</div>
-      <div class="app-name">Happ</div>
-      <div class="app-desc">Простой и быстрый клиент. VLESS Reality одним тапом. Работает без настройки.</div>
-      <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank" class="btn-download">Google Play →</a>
-    </div>
-    <div class="app-card">
-      <div class="app-name">Hiddify</div>
-      <div class="app-desc">Поддерживает все протоколы, автообновление конфигурации по подписке.</div>
-      <a href="https://play.google.com/store/apps/details?id=app.hiddify.com" target="_blank" class="btn-download">Google Play →</a>
-    </div>
-    <div class="app-card">
-      <div class="app-name">FlClash X</div>
-      <div class="app-desc">Clash-клиент с расширенными настройками маршрутизации. Для опытных пользователей.</div>
-      <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-android-universal.apk" class="btn-download">GitHub →</a>
-    </div>
-  </div>
-
-  <!-- Windows -->
-  <div class="app-grid" id="platform-windows">
-    <div class="app-card recommended">
-      <div class="app-rec-badge">Рекомендуется</div>
-      <div class="app-name">Hiddify</div>
-      <div class="app-desc">Простой GUI-клиент с поддержкой подписок и автообновлением конфигурации.</div>
-      <a href="#" class="btn-download" onclick="ghDownload(event,'hiddify/hiddify-app',/windows.*setup\.exe$|setup.*\.exe$/i)">GitHub →</a>
-    </div>
-    <div class="app-card">
-      <div class="app-name">FlClash X</div>
-      <div class="app-desc">Мощный Clash-клиент с гибкой настройкой правил маршрутизации.</div>
-      <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-windows-amd64-setup.exe" class="btn-download">GitHub →</a>
-    </div>
-  </div>
-
-  <!-- macOS -->
-  <div class="app-grid" id="platform-macos">
-    <div class="app-card recommended">
-      <div class="app-rec-badge">Рекомендуется</div>
-      <div class="app-name">Happ</div>
-      <div class="app-desc">Нативный macOS-клиент. Быстрое подключение одним кликом по ссылке подписки.</div>
-      <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" class="btn-download">App Store →</a>
-    </div>
-    <div class="app-card">
-      <div class="app-name">Hiddify</div>
-      <div class="app-desc">Кроссплатформенный клиент с поддержкой подписок и автообновления.</div>
-      <a href="https://apps.apple.com/app/hiddify-proxy-vpn/id6596777532" target="_blank" class="btn-download">App Store →</a>
-    </div>
-    <div class="app-card">
-      <div class="app-name">FlClash X</div>
-      <div class="app-desc">Clash-клиент для macOS с расширенными настройками и правилами.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-macos-arm64.dmg" class="btn-download">Apple Silicon →</a>
-        <a href="https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-macos-amd64.dmg" class="btn-download">Intel X64 →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STEP 2: CONFIG -->
-<section class="section" id="step-config">
-  <div class="section-label">// 02 — КОНФИГУРАЦИЯ</div>
+  <div class="section-label">// 01 — КОНФИГУРАЦИЯ</div>
   <div class="section-title">ДОБАВИТЬ<br>КОНФИГ</div>
 
   <div class="config-notice">
@@ -839,9 +677,9 @@
   </div>
 </section>
 
-<!-- STEP 3: REGISTER -->
+<!-- STEP 2: REGISTER -->
 <section class="section" id="step-register">
-  <div class="section-label">// 03 — РЕГИСТРАЦИЯ</div>
+  <div class="section-label">// 02 — РЕГИСТРАЦИЯ</div>
   <div class="section-title">ЗАРЕГИСТРИ-<br>РУЙТЕСЬ</div>
 
   <div class="register-grid">
@@ -938,16 +776,6 @@
     });
   }
 
-  // ─── Platform tabs ───────────────────────────────────────────────────────────
-  document.querySelectorAll('.plat-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.plat-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.app-grid').forEach(g => g.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById('platform-' + tab.dataset.platform).classList.add('active');
-    });
-  });
-
   // ─── Toast ───────────────────────────────────────────────────────────────────
   let toastTimer;
   function showToast(msg) {
@@ -956,24 +784,6 @@
     t.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
-  }
-
-  // ─── GitHub direct download ──────────────────────────────────────────────────
-  async function ghDownload(e, repo, pattern) {
-    e.preventDefault();
-    showToast('Загружаем...');
-    try {
-      const r = await fetch(`https://api.github.com/repos/${repo}/releases/latest`);
-      const d = await r.json();
-      const asset = d.assets && d.assets.find(a => pattern.test(a.name));
-      if (asset) {
-        window.location.href = asset.browser_download_url;
-      } else {
-        window.open(d.html_url || `https://github.com/${repo}/releases/latest`, '_blank');
-      }
-    } catch(err) {
-      window.open(`https://github.com/${repo}/releases/latest`, '_blank');
-    }
   }
 
   // ─── Custom cursor ────────────────────────────────────────────────────────────
